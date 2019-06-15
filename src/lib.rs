@@ -1121,6 +1121,9 @@ impl Builder {
 
     /// Generate the Rust bindings using the options built up thus far.
     pub fn generate(mut self) -> Result<Bindings, ()> {
+        if let Some (extra_clang_args) = std::env::var("BINDGEN_EXTRA_CLANG_ARGS").ok() {
+            self.options.clang_args.push(extra_clang_args);
+        }
         self.options.input_header = self.input_headers.pop();
         self.options.clang_args.extend(
             self.input_headers
